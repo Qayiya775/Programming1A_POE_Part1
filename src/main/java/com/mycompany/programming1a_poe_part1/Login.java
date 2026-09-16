@@ -12,10 +12,12 @@ public class Login {
     
     private String username;
     private String password;
-    
+    private String cellPhoneNumber;
+            
     public Login(String username,String password){
         this.username=username;
         this.password=password;
+        this.cellPhoneNumber=cellPhoneNumber;
     }
     
     public boolean checkUserName() {
@@ -46,5 +48,11 @@ public boolean checkPasswordComplexity() {
     }
     
     return hasCapital && hasNumber && hasSpecialCharacter;
+}
+// Regex validation researched using:
+// ICASA South African Numbering Plan - South Africa uses country code +27.
+// Oracle Java documentation - String.matches() used for regex validation.
+public boolean checkCellPhoneNumber(){
+    return cellPhoneNumber.matches("\\+27\\\\d{9}");
 }
 }
