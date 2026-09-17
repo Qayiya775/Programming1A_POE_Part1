@@ -55,4 +55,24 @@ public boolean checkPasswordComplexity() {
 public boolean checkCellPhoneNumber(){
     return cellPhoneNumber.matches("\\+27\\\\d{9}");
 }
+public String registerUser() {
+    if (!checkUserName()) {
+        return "Username is not correctly formatted; please ensure that your "
+                + "username contains an underscore and is no maore than 5 "
+                + "characters in length.";
+    }
+    if (!checkPasswordComplexity()) {
+        return "Password is not correctly formatted;please ensure that the"
+                + " password contains at least 8 characters, a capital letter,"
+                + " a numeber, and a speacial character.";
+    }
+    if (!checkCellPhoneNumber()) {
+        return"Cellphone number incorrectly formatted or does not contain "
+                + "international code.";
+    }
+    
+    return "Username successfully captured.\n"
+            + "Password succesfully captured.\n"
+            + "Cell phone number successfully added.";
+}
 }
