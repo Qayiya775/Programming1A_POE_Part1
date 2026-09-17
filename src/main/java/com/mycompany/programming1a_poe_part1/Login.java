@@ -59,7 +59,7 @@ public boolean checkPasswordComplexity() {
 // ICASA South African Numbering Plan - South Africa uses country code +27.
 // Oracle Java documentation - String.matches() used for regex validation.
 public boolean checkCellPhoneNumber(){
-    return cellPhoneNumber.matches("\\+27\\\\d{9}");
+    return cellPhoneNumber.matches("\\+27\\d{9}");
 }
 public String registerUser() {
     if (!checkUserName()) {
