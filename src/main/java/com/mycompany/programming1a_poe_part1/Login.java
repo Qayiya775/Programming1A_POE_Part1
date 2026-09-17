@@ -13,11 +13,17 @@ public class Login {
     private String username;
     private String password;
     private String cellPhoneNumber;
+    private String firstName;
+    private String lastName;
             
-    public Login(String username,String password){
+    public Login(String username,String password,String cellPhoneNumber,
+            String firstName, String lastName){
+        
         this.username=username;
         this.password=password;
         this.cellPhoneNumber=cellPhoneNumber;
+        this.firstName=firstName;
+        this.lastName=lastName;
     }
     
     public boolean checkUserName() {
@@ -62,12 +68,12 @@ public String registerUser() {
                 + "characters in length.";
     }
     if (!checkPasswordComplexity()) {
-        return "Password is not correctly formatted;please ensure that the"
+        return "Password is not correctly formatted; please ensure that the"
                 + " password contains at least 8 characters, a capital letter,"
                 + " a numeber, and a speacial character.";
     }
     if (!checkCellPhoneNumber()) {
-        return"Cellphone number incorrectly formatted or does not contain "
+        return "Cellphone number incorrectly formatted or does not contain"
                 + "international code.";
     }
     
@@ -75,4 +81,22 @@ public String registerUser() {
             + "Password succesfully captured.\n"
             + "Cell phone number successfully added.";
 }
+
+public boolean loginUser(String enteredUsername, String enteredPassword) {
+    return username.equals(enteredUsername)
+            && password.equals(enteredPassword);
 }
+
+public String returnLoginStatus(String enteredUserName,String enteredPassword){
+    
+    if (loginUser(enteredUserName, enteredPassword)){
+    return "Welcome" + firstName + ", " + lastName 
+            + " it is great to see you again.";
+    
+    }else{
+        return "Username or password incorrect, please try again.";
+    }
+}
+
+}
+
