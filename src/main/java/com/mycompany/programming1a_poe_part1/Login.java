@@ -64,12 +64,12 @@ public boolean checkCellPhoneNumber(){
 public String registerUser() {
     if (!checkUserName()) {
         return "Username is not correctly formatted; please ensure that your "
-                + "username contains an underscore and is no maore than 5 "
+                + "username contains an underscore and is no maore than five "
                 + "characters in length.";
     }
     if (!checkPasswordComplexity()) {
         return "Password is not correctly formatted; please ensure that the"
-                + " password contains at least 8 characters, a capital letter,"
+                + " password contains at least eight characters, a capital letter,"
                 + " a numeber, and a speacial character.";
     }
     if (!checkCellPhoneNumber()) {
