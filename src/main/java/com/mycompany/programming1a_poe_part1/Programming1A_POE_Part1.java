@@ -1,7 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
-
 package com.mycompany.programming1a_poe_part1;
 
 import java.util.Scanner;
@@ -14,45 +13,45 @@ public class Programming1A_POE_Part1 {
 
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        
+
         System.out.println("REGISTRATION");
-        
+
         System.out.print("Enter your first name: ");
         String firstName = input.nextLine();
-        
+
         System.out.print("Enter your last name: ");
         String lastName = input.nextLine();
-        
+
         System.out.print("Enter your username: ");
-        String username= input.nextLine();
-        
+        String username = input.nextLine();
+
         System.out.print("Enter your password: ");
         String password = input.nextLine();
-        
+
         System.out.print("Enter your cell phone number: ");
         String cellPhoneNumber = input.nextLine();
-        
-        Login login = new Login(username, password, cellPhoneNumber, firstName, 
-                lastName );
-        
+
+        Login login = new Login(username, password, cellPhoneNumber, firstName,
+                lastName);
+
         String registrationMessage = login.registerUser();
-System.out.println(registrationMessage);
+        System.out.println(registrationMessage);
 
-if (login.checkUserName()
-        && login.checkPasswordComplexity()
-        && login.checkCellPhoneNumber()) {
+        if (login.checkUserName()
+                && login.checkPasswordComplexity()
+                && login.checkCellPhoneNumber()) {
 
-    System.out.println();
-    System.out.println("LOGIN");
+            System.out.println();
+            System.out.println("LOGIN");
 
-    System.out.print("Enter your username: ");
-    String enteredUsername = input.nextLine();
+            System.out.print("Enter your username: ");
+            String enteredUsername = input.nextLine();
 
-    System.out.print("Enter your password: ");
-    String enteredPassword = input.nextLine();
+            System.out.print("Enter your password: ");
+            String enteredPassword = input.nextLine();
 
-    System.out.println(login.returnLoginStatus(enteredUsername, enteredPassword));
-}
+            System.out.println(login.returnLoginStatus(enteredUsername, enteredPassword));
+        }
     }
-   
+
 }
