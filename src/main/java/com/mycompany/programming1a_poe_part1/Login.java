@@ -55,26 +55,32 @@ public boolean checkPasswordComplexity() {
     
     return hasCapital && hasNumber && hasSpecialCharacter;
 }
-// Regex validation researched using:
-// ICASA South African Numbering Plan - South Africa uses country code +27.
-// Oracle Java documentation - String.matches() used for regex validation.
+// Cellphone number validation uses a regular expression.
+// ICASA Numbering Plan was consulted for South African number length.
+// Oracle Java documentation was consulted for the String.matches() method.
+// Sources:
+// ICASA: https://www.icasa.org.za/pages/numbering
+// Oracle: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html
+
 public boolean checkCellPhoneNumber(){
     return cellPhoneNumber.matches("\\+27\\d{9}");
 }
 public String registerUser() {
     if (!checkUserName()) {
-        return "Username is not correctly formatted; please ensure that your "
-                + "username contains an underscore and is no maore than five "
-                + "characters in length.";
+    return "Username is not correctly formatted; please ensure that your "
+            + "username contains an underscore and is no more than five "
+            + "characters in length.";
     }
+    
     if (!checkPasswordComplexity()) {
-        return "Password is not correctly formatted; please ensure that the"
-                + " password contains at least eight characters, a capital letter,"
-                + " a numeber, and a speacial character.";
+    return "Password is not correctly formatted; please ensure that the "
+            + "password contains at least eight characters, a capital letter, "
+            + "a number, and a special character.";
     }
+    
     if (!checkCellPhoneNumber()) {
-        return "Cellphone number incorrectly formatted or does not contain"
-                + "international code.";
+    return "Cellphone number incorrectly formatted or does not contain "
+            + "international code.";
     }
     
     return "Username successfully captured.\n"
