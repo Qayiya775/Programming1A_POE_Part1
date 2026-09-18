@@ -78,8 +78,8 @@ public String registerUser() {
     }
     
     return "Username successfully captured.\n"
-            + "Password succesfully captured.\n"
-            + "Cell phone number successfully added.";
+        + "Password successfully captured.\n"
+        + "Cell number successfully captured.";
 }
 
 public boolean loginUser(String enteredUsername, String enteredPassword) {
@@ -90,7 +90,7 @@ public boolean loginUser(String enteredUsername, String enteredPassword) {
 public String returnLoginStatus(String enteredUserName,String enteredPassword){
     
     if (loginUser(enteredUserName, enteredPassword)){
-    return "Welcome" + firstName + ", " + lastName 
+    return "Welcome " + firstName + ", " + lastName 
             + " it is great to see you again.";
     
     }else{

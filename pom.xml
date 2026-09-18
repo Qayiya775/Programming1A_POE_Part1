@@ -10,4 +10,13 @@
         <maven.compiler.release>26</maven.compiler.release>
         <exec.mainClass>com.mycompany.programming1a_poe_part1.Programming1A_POE_Part1</exec.mainClass>
     </properties>
+    
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.11.4</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>
