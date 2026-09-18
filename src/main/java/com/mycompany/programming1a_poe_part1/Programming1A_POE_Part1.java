@@ -35,18 +35,24 @@ public class Programming1A_POE_Part1 {
         Login login = new Login(username, password, cellPhoneNumber, firstName, 
                 lastName );
         
-        System.out.println(login.registerUser());
-        
-        System.out.println();
-        System.out.println("LOGIN");
-        
-        System.out.print("Enter your username: ");
-        String enteredUsername = input.nextLine();
-        
-        System.out.print("Enter your password: ");
-        String enteredPassword = input.nextLine();
-        
-        System.out.println(login.returnLoginStatus(enteredUsername, enteredPassword));
+        String registrationMessage = login.registerUser();
+System.out.println(registrationMessage);
+
+if (login.checkUserName()
+        && login.checkPasswordComplexity()
+        && login.checkCellPhoneNumber()) {
+
+    System.out.println();
+    System.out.println("LOGIN");
+
+    System.out.print("Enter your username: ");
+    String enteredUsername = input.nextLine();
+
+    System.out.print("Enter your password: ");
+    String enteredPassword = input.nextLine();
+
+    System.out.println(login.returnLoginStatus(enteredUsername, enteredPassword));
+}
     }
    
 }
