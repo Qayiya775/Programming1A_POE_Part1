@@ -198,4 +198,22 @@ public class MessageTest {
         );
     }
 
+    // Tests that the total number of sent messages increases
+    @Test
+    public void testReturnTotalMessages() {
+
+        int beforeSending = Message.returnTotalMessages();
+
+        Message message = new Message(
+                1, "+27838968976", "Hi Mike"
+        );
+
+        message.SentMessage(1);
+
+        assertEquals(
+                beforeSending + 1,
+                Message.returnTotalMessages()
+        );
+    }
+
 }
