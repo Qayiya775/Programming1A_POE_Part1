@@ -10,6 +10,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.io.IOException;
 
 /**
  *
@@ -215,5 +218,51 @@ public class MessageTest {
                 Message.returnTotalMessages()
         );
     }
+    
+    // Tests that a message is successfully saved to JSON
+    @Test
+    public void testStoreMessageJson() throws IOException {
+
+        Path filePath = Path.of("messages.json");
+
+        // Keep a copy of the existing file
+        boolean fileExisted = Files.exists(filePath);
+        byte[] originalContent = fileExisted
+                ? Files.readAllBytes(filePath) : null;
+
+        try {
+            Message message = new Message(
+                    1, "+27718693002",
+                    "Hi Keegan, did you receive the payment?"
+            );
+
+            assertEquals(
+                    "Message successfully stored.",
+                    message.storeMessage()
+            );
+
+            assertTrue(Files.exists(filePath));
+
+            String jsonContent = Files.readString(filePath);
+
+            assertTrue(jsonContent.contains(
+                    "Hi Keegan, did you receive the payment?"
+            ));
+
+            assertTrue(jsonContent.contains(
+                    "+27718693002"
+            ));
+
+        } finally {
+
+            // Restore the original file after testing
+            if (fileExisted) {
+                Files.write(filePath, originalContent);
+            } else {
+                Files.deleteIfExists(filePath);
+            }
+        }
+    }
+
 
 }
