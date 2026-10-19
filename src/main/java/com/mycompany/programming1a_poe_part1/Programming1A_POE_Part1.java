@@ -11,14 +11,21 @@ import java.util.ArrayList;
  * @author User 1
  */
 
+
+import java.util.Scanner;
+import java.util.ArrayList;
+
 public class Programming1A_POE_Part1 {
 
     public static void main(String[] args) {
 
         Scanner input = new Scanner(System.in);
 
-        // Stores messages that have been successfully sent
+        // Stores successfully sent messages
         ArrayList<Message> sentMessages = new ArrayList<>();
+
+        // Tracks message numbers across the program
+        int messageNumber = 0;
 
         // PART 1 - REGISTRATION
         System.out.println("REGISTRATION");
@@ -43,35 +50,31 @@ public class Programming1A_POE_Part1 {
                 firstName, lastName
         );
 
-        String registrationMessage = login.registerUser();
-        System.out.println(registrationMessage);
+        System.out.println(login.registerUser());
 
-        // Check registration details before allowing login
-        if (login.checkUserName()
-                && login.checkPasswordComplexity()
-                && login.checkCellPhoneNumber()) {
+        // Only allow login after successful registration
+        if (!login.checkUserName()
+                || !login.checkPasswordComplexity()
+                || !login.checkCellPhoneNumber()) {
 
-            System.out.println();
-            System.out.println("LOGIN");
+            return;
+        }
 
-            System.out.print("Enter your username: ");
-            String enteredUsername = input.nextLine();
+        System.out.println();
+        System.out.println("LOGIN");
 
-            System.out.print("Enter your password: ");
-            String enteredPassword = input.nextLine();
+        System.out.print("Enter your username: ");
+        String enteredUsername = input.nextLine();
 
-            System.out.println(login.returnLoginStatus(
-                    enteredUsername, enteredPassword
-            ));
+        System.out.print("Enter your password: ");
+        String enteredPassword = input.nextLine();
 
-            // Stop the program if login details are incorrect
-            if (!login.loginUser(enteredUsername, enteredPassword)) {
-                return;
-            }
+        System.out.println(login.returnLoginStatus(
+                enteredUsername, enteredPassword
+        ));
 
-        } else {
-
-            // Stop if registration was unsuccessful
+        // Stop if login is unsuccessful
+        if (!login.loginUser(enteredUsername, enteredPassword)) {
             return;
         }
 
@@ -97,34 +100,57 @@ public class Programming1A_POE_Part1 {
                 menuOption = 1;
                 System.out.println("Send Messages selected.");
 
-                System.out.print("How many messages would you like to send? ");
-                String numberEntered = input.nextLine();
-                int numberOfMessages = Integer.parseInt(numberEntered);
+                System.out.print(
+                        "How many messages would you like to send? "
+                );
 
-                // Repeat for the number of messages selected
+                String numberEntered = input.nextLine();
+                int numberOfMessages;
+
+                // Prevent the program from crashing on invalid input
+                try {
+                    numberOfMessages = Integer.parseInt(numberEntered);
+                } catch (NumberFormatException e) {
+                    System.out.println(
+                            "Please enter a valid whole number."
+                    );
+                    continue;
+                }
+
+                if (numberOfMessages <= 0) {
+                    System.out.println(
+                            "Please enter a number greater than zero."
+                    );
+                    continue;
+                }
+
+                // Repeat for the selected number of messages
                 for (int i = 1; i <= numberOfMessages; i++) {
+
+                    messageNumber++;
 
                     System.out.println();
                     System.out.println(
                             "Message " + i + " of " + numberOfMessages
                     );
 
-                    System.out.print("Enter recipient cell phone number: ");
+                    System.out.print(
+                            "Enter recipient cell phone number: "
+                    );
                     String recipient = input.nextLine();
 
                     System.out.print("Enter your message: ");
                     String messageText = input.nextLine();
 
-                    // Create a message object
+                    // Create the message object
                     Message message = new Message(
-                            i, recipient, messageText
+                            messageNumber, recipient, messageText
                     );
 
-                    // Check recipient and message length
+                    // Display validation results
                     System.out.println(message.checkRecipientCell());
                     System.out.println(message.checkMessageLength());
 
-                    // Ask the user what to do with the message
                     System.out.println();
                     System.out.println(
                             "What would you like to do with this message?"
@@ -140,25 +166,46 @@ public class Programming1A_POE_Part1 {
 
                         if (message.isMessageValid()) {
 
-                            System.out.println(message.SentMessage(1));
+                            System.out.println(
+                                    message.SentMessage(1)
+                            );
+
                             sentMessages.add(message);
-                            System.out.println(message.printMessages());
+
+                            // Display the full message details
+                            System.out.println(
+                                    message.printMessages()
+                            );
 
                         } else {
 
                             System.out.println(
-                                    "Message not sent. Please correct the recipient "
-                                    + "or message length."
+                                    "Message not sent. Please correct "
+                                    + "the recipient or message length."
                             );
                         }
 
                     } else if (messageChoice.equals("2")) {
 
-                        System.out.println(message.SentMessage(2));
+                        System.out.println(
+                                message.SentMessage(2)
+                        );
 
                     } else if (messageChoice.equals("3")) {
 
-                        System.out.println(message.storeMessage());
+                        if (message.isMessageValid()) {
+
+                            System.out.println(
+                                    message.storeMessage()
+                            );
+
+                        } else {
+
+                            System.out.println(
+                                    "Message not stored. Please correct "
+                                    + "the recipient or message length."
+                            );
+                        }
 
                     } else {
 
@@ -171,31 +218,18 @@ public class Programming1A_POE_Part1 {
             } else if (choice.equals("2")) {
 
                 menuOption = 2;
-                // Display all successfully sent messages
-                if (sentMessages.isEmpty()) {
-                    System.out.println("No messages have been sent yet.");
-                } else {
-                    System.out.println("Recently Sent Messages:");
-                    
-                    for (Message message : sentMessages) {
-                        System.out.println();
-                        System.out.println(message.printMessages());
-                        
-                    }
-                    
-                }
-   
-                
+
+                // Part 2 requires this feature to be unavailable
+                System.out.println("Coming Soon.");
 
             } else if (choice.equals("3")) {
 
                 menuOption = 3;
 
-                System.out.println("Total messages sent: "
-                        + Message.returnTotalMessages());
-
-                System.out.println("Messages in sent list: "
-                        + sentMessages.size());
+                System.out.println(
+                        "Total messages sent: "
+                        + Message.returnTotalMessages()
+                );
 
                 System.out.println("Goodbye!");
 

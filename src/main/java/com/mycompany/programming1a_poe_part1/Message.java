@@ -24,7 +24,7 @@ public class Message {
     private String messageText;
     private String messageHash;
     // Tracks the total number of messages successfully sent
-private static int totalMessages = 0;
+    private static int totalMessages = 0;
     
     
     // Constructor to create a new message
