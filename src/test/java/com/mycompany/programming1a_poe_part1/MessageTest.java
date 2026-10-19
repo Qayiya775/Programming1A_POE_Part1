@@ -156,4 +156,46 @@ public class MessageTest {
     }
 
 
+    // Tests the Send Message option
+    @Test
+    public void testSendMessage() {
+
+        Message message = new Message(
+                1, "+27838968976", "Hi Mike"
+        );
+
+        assertEquals(
+                "Message successfully sent.",
+                message.SentMessage(1)
+        );
+    }
+
+    // Tests the Disregard Message option
+    @Test
+    public void testDisregardMessage() {
+
+        Message message = new Message(
+                1, "+27838968976", "Hi Mike"
+        );
+
+        assertEquals(
+                "Press 0 to delete the message.",
+                message.SentMessage(2)
+        );
+    }
+
+    // Tests the Store Message option response
+    @Test
+    public void testStoreMessageOption() {
+
+        Message message = new Message(
+                1, "+27838968976", "Hi Mike"
+        );
+
+        assertEquals(
+                "Message successfully stored.",
+                message.SentMessage(3)
+        );
+    }
+
 }
