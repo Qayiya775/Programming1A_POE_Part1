@@ -2,8 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+
 package com.mycompany.programming1a_poe_part1;
+
 import java.util.Random;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 /**
  *
  * @author User 1
@@ -76,7 +83,9 @@ private static int totalMessages = 0;
                 + ":" + messageNumber + ":"
                 + firstWord + lastWord;
 
-        return messageHash.toUpperCase();
+       messageHash = messageHash.toUpperCase();
+       return messageHash;
+
     }
 
     // Checks that the message does not exceed 250 characters
@@ -95,13 +104,25 @@ private static int totalMessages = 0;
                     + "; please reduce the size.";
         }
     }
+    
+    // Checks whether a message is valid before sending
+    public boolean isMessageValid() {
+        
+        boolean validRecipient = recipient != null
+                && recipient.matches("\\+27\\d{9}");
+        boolean validLength = messageText != null
+                && !messageText.trim().isEmpty()
+                && messageText.length() <= 250;
+        
+        return validRecipient && validLength;
+    }
 
     // Returns the response for the selected message option
     public String SentMessage(int option) {
         
-if (option == 1) {
-    totalMessages++;
-    return "Message successfully sent.";
+        if (option == 1) {
+           totalMessages++;
+           return "Message successfully sent.";
 
 
         } else if (option == 2) {
@@ -115,7 +136,7 @@ if (option == 1) {
 
     
     // Returns the total number of messages sent
-    public int returnTotalMessages() {
+    public static int returnTotalMessages() {
         return totalMessages;
     }
 
@@ -126,5 +147,76 @@ if (option == 1) {
                 + "\nRecipient: " + recipient
                 + "\nMessage: " + messageText;
     }
+    
+    
+    // Stores the message in a JSON file
+    public String storeMessage() {
+
+        if (!isMessageValid()) {
+            return "Message cannot be stored. Invalid message details.";
+        }
+
+        String json = "{"
+                + "\"messageID\":\"" + messageID + "\","
+                + "\"messageNumber\":" + messageNumber + ","
+                + "\"recipient\":\"" + recipient + "\","
+                + "\"messageText\":\"" + escapeJson(messageText) + "\","
+                + "\"messageHash\":\"" + messageHash + "\""
+                + "}";
+
+        try {
+            Path filePath = Path.of("messages.json");
+
+            String existingMessages = "";
+
+            if (Files.exists(filePath)) {
+                existingMessages = Files.readString(filePath).trim();
+            }
+
+            String updatedMessages;
+
+            if (existingMessages.isEmpty()) {
+                updatedMessages = "[\n" + json + "\n]";
+            } else if (existingMessages.startsWith("[")
+                    && existingMessages.endsWith("]")) {
+
+                String contents = existingMessages.substring(
+                        1, existingMessages.length() - 1
+                ).trim();
+
+                if (contents.isEmpty()) {
+                    updatedMessages = "[\n" + json + "\n]";
+                } else {
+                    updatedMessages = "[\n" + contents
+                            + ",\n" + json + "\n]";
+                }
+
+            } else {
+                // Converts the existing single message into an array
+                updatedMessages = "[\n" + existingMessages
+                        + ",\n" + json + "\n]";
+            }
+
+            try (FileWriter writer = new FileWriter("messages.json")) {
+                writer.write(updatedMessages);
+            }
+
+            return "Message successfully stored.";
+
+        } catch (IOException e) {
+            return "Error storing message: " + e.getMessage();
+        }
+    }
+
+
+    // Handles special characters in JSON
+    private String escapeJson(String text) {
+        return text.replace("\\", "\\\\")
+                .replace("\"", "\\\"")
+                .replace("\n", "\\n")
+                .replace("\r", "\\r")
+                .replace("\t", "\\t");
+    }
+
 
 }
