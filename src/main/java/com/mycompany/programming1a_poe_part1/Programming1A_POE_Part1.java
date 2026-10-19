@@ -171,7 +171,21 @@ public class Programming1A_POE_Part1 {
             } else if (choice.equals("2")) {
 
                 menuOption = 2;
-                System.out.println("Coming Soon.");
+                // Display all successfully sent messages
+                if (sentMessages.isEmpty()) {
+                    System.out.println("No messages have been sent yet.");
+                } else {
+                    System.out.println("Recently Sent Messages:");
+                    
+                    for (Message message : sentMessages) {
+                        System.out.println();
+                        System.out.println(message.printMessages());
+                        
+                    }
+                    
+                }
+   
+                
 
             } else if (choice.equals("3")) {
 
