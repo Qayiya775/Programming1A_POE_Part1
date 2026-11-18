@@ -218,5 +218,26 @@ public class Message {
                 .replace("\t", "\\t");
     }
 
+    // PART 3 - Getter methods
+    public String getMessageID() {
+        return messageID;
+    }
+
+    public int getMessageNumber() {
+        return messageNumber;
+    }
+
+    public String getRecipient() {
+        return recipient;
+    }
+
+    public String getMessageText() {
+        return messageText;
+    }
+
+    public String getMessageHash() {
+        return messageHash;
+    }
+          
 
 }

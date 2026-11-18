@@ -3,9 +3,6 @@
  */
 package com.mycompany.programming1a_poe_part1;
 
-import java.util.Scanner;
-import java.util.ArrayList;
-
 /**
  *
  * @author User 1
@@ -20,6 +17,11 @@ public class Programming1A_POE_Part1 {
     public static void main(String[] args) {
 
         Scanner input = new Scanner(System.in);
+        
+        // PART 3 - Manages message arrays
+        MessageManager messageManager = new MessageManager();
+
+
 
         // Stores successfully sent messages
         ArrayList<Message> sentMessages = new ArrayList<>();
@@ -171,6 +173,10 @@ public class Programming1A_POE_Part1 {
                             );
 
                             sentMessages.add(message);
+                            
+                            // Adds the sent message to the arrays
+                            messageManager.addMessage(message, 1);
+
 
                             // Display the full message details
                             System.out.println(
@@ -190,14 +196,22 @@ public class Programming1A_POE_Part1 {
                         System.out.println(
                                 message.SentMessage(2)
                         );
+                        
+                        // Adds the disregarded message to the arrays
+                        messageManager.addMessage(message, 2);
 
                     } else if (messageChoice.equals("3")) {
 
                         if (message.isMessageValid()) {
 
-                            System.out.println(
-                                    message.storeMessage()
-                            );
+                            String storageResult = message.storeMessage();
+                            System.out.println(storageResult);
+                            
+                            // Adds the message only if storage was successful
+                            if (storageResult.equals("Message successfully stored.")) {
+                                messageManager.addMessage(message, 3);
+                            }
+                                                                                   
 
                         } else {
 
@@ -230,6 +244,8 @@ public class Programming1A_POE_Part1 {
                         "Total messages sent: "
                         + Message.returnTotalMessages()
                 );
+                
+                messageManager.displayArrayCounts();
 
                 System.out.println("Goodbye!");
 
