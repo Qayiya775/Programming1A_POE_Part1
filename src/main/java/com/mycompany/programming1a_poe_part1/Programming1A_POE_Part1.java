@@ -79,6 +79,10 @@ public class Programming1A_POE_Part1 {
         if (!login.loginUser(enteredUsername, enteredPassword)) {
             return;
         }
+        
+        // PART 3 - Loads previously stored messages
+        messageManager.loadStoredMessages();
+
 
         // PART 2 - QUICKCHAT MENU
         System.out.println();

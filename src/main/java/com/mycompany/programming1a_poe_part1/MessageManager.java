@@ -4,6 +4,12 @@
  */
 package com.mycompany.programming1a_poe_part1;
 
+import com.google.gson.Gson;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 /**
  *
  * @author User 1
@@ -87,5 +93,36 @@ public class MessageManager {
         System.out.println("Message hashes: " + messageHashes.length);
         System.out.println("Message IDs: " + messageIDs.length);
     }
-    
+        // PART 3 - Reads stored messages from the JSON file
+    // Adapted from Google Gson User Guide:
+    // https://google.github.io/gson/UserGuide.html
+
+    public void loadStoredMessages() {
+
+        Path filePath = Path.of("messages.json");
+
+        if (!Files.exists(filePath)) {
+            return;
+        }
+
+        try (FileReader reader = new FileReader("messages.json")) {
+
+            Gson gson = new Gson();
+
+            Message[] loadedMessages = gson.fromJson(
+                    reader, Message[].class);
+
+            if (loadedMessages != null) {
+
+                for (int i = 0; i < loadedMessages.length; i++) {
+                    addMessage(loadedMessages[i], 3);
+                }
+            }
+
+        } catch (IOException | com.google.gson.JsonParseException e) {
+            System.out.println("Error reading stored messages: "
+                    + e.getMessage());
+        }
+    }
+   
 }
