@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 package com.mycompany.programming1a_poe_part1;
 
 import java.util.Random;
@@ -16,17 +15,20 @@ import java.nio.file.Path;
  * @author User 1
  */
 public class Message {
-    
+
     // Stores the information for each message
     private String messageID;
     private int messageNumber;
     private String recipient;
     private String messageText;
     private String messageHash;
+
+// PART 3 - Stores the sender's cellphone number
+    private String sender;
+
     // Tracks the total number of messages successfully sent
     private static int totalMessages = 0;
-    
-    
+
     // Constructor to create a new message
     public Message(int messageNumber, String recipient, String messageText) {
         this.messageNumber = messageNumber;
@@ -55,7 +57,6 @@ public class Message {
                 && messageID.matches("\\d{10}");
     }
 
-
     // Checks whether the recipient has a valid cellphone number
     public String checkRecipientCell() {
         if (recipient != null && recipient.matches("\\+27\\d{9}")) {
@@ -83,8 +84,8 @@ public class Message {
                 + ":" + messageNumber + ":"
                 + firstWord + lastWord;
 
-       messageHash = messageHash.toUpperCase();
-       return messageHash;
+        messageHash = messageHash.toUpperCase();
+        return messageHash;
 
     }
 
@@ -104,26 +105,25 @@ public class Message {
                     + "; please reduce the size.";
         }
     }
-    
+
     // Checks whether a message is valid before sending
     public boolean isMessageValid() {
-        
+
         boolean validRecipient = recipient != null
                 && recipient.matches("\\+27\\d{9}");
         boolean validLength = messageText != null
                 && !messageText.trim().isEmpty()
                 && messageText.length() <= 250;
-        
+
         return validRecipient && validLength;
     }
 
     // Returns the response for the selected message option
     public String SentMessage(int option) {
-        
-        if (option == 1) {
-           totalMessages++;
-           return "Message successfully sent.";
 
+        if (option == 1) {
+            totalMessages++;
+            return "Message successfully sent.";
 
         } else if (option == 2) {
             return "Press 0 to delete the message.";
@@ -134,7 +134,6 @@ public class Message {
         }
     }
 
-    
     // Returns the total number of messages sent
     public static int returnTotalMessages() {
         return totalMessages;
@@ -147,8 +146,7 @@ public class Message {
                 + "\nRecipient: " + recipient
                 + "\nMessage: " + messageText;
     }
-    
-    
+
     // Stores the message in a JSON file
     public String storeMessage() {
 
@@ -159,9 +157,10 @@ public class Message {
         String json = "{"
                 + "\"messageID\":\"" + messageID + "\","
                 + "\"messageNumber\":" + messageNumber + ","
+                + "\"sender\":\"" + (sender == null ? "" : sender) + "\","
                 + "\"recipient\":\"" + recipient + "\","
                 + "\"messageText\":\"" + escapeJson(messageText) + "\","
-                + "\"messageHash\":\"" + messageHash + "\""
+                + "\"messageHash\":\"" + escapeJson(messageHash) + "\""
                 + "}";
 
         try {
@@ -208,7 +207,6 @@ public class Message {
         }
     }
 
-
     // Handles special characters in JSON
     private String escapeJson(String text) {
         return text.replace("\\", "\\\\")
@@ -238,6 +236,15 @@ public class Message {
     public String getMessageHash() {
         return messageHash;
     }
-          
+
+    // PART 3 - Sets the sender's cellphone number
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
+
+    // PART 3 - Returns the sender's cellphone number
+    public String getSender() {
+        return sender;
+    }
 
 }

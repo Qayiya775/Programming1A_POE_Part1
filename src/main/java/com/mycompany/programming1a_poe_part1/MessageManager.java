@@ -15,20 +15,21 @@ import java.nio.file.Path;
  * @author User 1
  */
 public class MessageManager {
-    
-        // PART 3 - Arrays for managing messages
+
+    // PART 3 - Arrays for managing messages
     private String[] sentMessages = new String[0];
     private String[] disregardedMessages = new String[0];
     private String[] storedMessages = new String[0];
     private String[] messageHashes = new String[0];
     private String[] messageIDs = new String[0];
-    
-        // Supporting parallel arrays for searching and reporting
+
+    // Supporting parallel arrays for searching and reporting
     private String[] allMessages = new String[0];
     private String[] recipients = new String[0];
+    private String[] senders = new String[0];
     private String[] messageStatuses = new String[0];
-    
-        // Adds a new value to an existing array
+
+    // Adds a new value to an existing array
     private String[] addToArray(String[] array, String value) {
 
         String[] newArray = new String[array.length + 1];
@@ -41,8 +42,8 @@ public class MessageManager {
 
         return newArray;
     }
-    
-        // Adds message details to the appropriate arrays
+
+    // Adds message details to the appropriate arrays
     public void addMessage(Message message, int option) {
 
         if (option == 1) {
@@ -66,13 +67,16 @@ public class MessageManager {
 
         messageIDs = addToArray(messageIDs,
                 message.getMessageID());
-        
-                // Stores related message information at matching indexes
+
+        // Stores related message information at matching indexes
         allMessages = addToArray(allMessages,
                 message.getMessageText());
 
         recipients = addToArray(recipients,
                 message.getRecipient());
+
+        // PART 3 - Populates the sender array
+        senders = addToArray(senders, message.getSender());
 
         // Records the selected message status
         if (option == 1) {
@@ -83,8 +87,8 @@ public class MessageManager {
             messageStatuses = addToArray(messageStatuses, "Stored");
         }
     }
-    
-        // Temporarily checks that the arrays are populated
+
+    // Temporarily checks that the arrays are populated
     public void displayArrayCounts() {
 
         System.out.println("Sent messages: " + sentMessages.length);
@@ -93,7 +97,8 @@ public class MessageManager {
         System.out.println("Message hashes: " + messageHashes.length);
         System.out.println("Message IDs: " + messageIDs.length);
     }
-        // PART 3 - Reads stored messages from the JSON file
+    
+    // PART 3 - Reads stored messages from the JSON file
     // Adapted from Google Gson User Guide:
     // https://google.github.io/gson/UserGuide.html
 
@@ -124,5 +129,31 @@ public class MessageManager {
                     + e.getMessage());
         }
     }
-   
+    // PART 3 - Displays the sender and recipient of stored messages
+
+    public void displaySenderAndRecipient() {
+
+        if (storedMessages.length == 0) {
+            System.out.println("No stored messages available.");
+            return;
+        }
+
+        System.out.println("\nSTORED MESSAGE DETAILS");
+
+        for (int i = 0; i < allMessages.length; i++) {
+
+            if (messageStatuses[i].equals("Stored")) {
+
+                if (senders[i] == null || senders[i].isEmpty()) {
+                    System.out.println("Sender: Not recorded");
+                } else {
+                    System.out.println("Sender: " + senders[i]);
+                }
+
+                System.out.println("Recipient: " + recipients[i]);
+                System.out.println("------------------------------");
+            }
+        }
+    }
+
 }

@@ -7,8 +7,6 @@ package com.mycompany.programming1a_poe_part1;
  *
  * @author User 1
  */
-
-
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -17,11 +15,9 @@ public class Programming1A_POE_Part1 {
     public static void main(String[] args) {
 
         Scanner input = new Scanner(System.in);
-        
+
         // PART 3 - Manages message arrays
         MessageManager messageManager = new MessageManager();
-
-
 
         // Stores successfully sent messages
         ArrayList<Message> sentMessages = new ArrayList<>();
@@ -79,10 +75,9 @@ public class Programming1A_POE_Part1 {
         if (!login.loginUser(enteredUsername, enteredPassword)) {
             return;
         }
-        
+
         // PART 3 - Loads previously stored messages
         messageManager.loadStoredMessages();
-
 
         // PART 2 - QUICKCHAT MENU
         System.out.println();
@@ -93,10 +88,10 @@ public class Programming1A_POE_Part1 {
         while (menuOption != 3) {
 
             System.out.println();
-            System.out.println("Please choose an option:");
             System.out.println("1) Send Messages");
             System.out.println("2) Show Recently Sent Messages");
             System.out.println("3) Quit");
+            System.out.println("4) Stored Messages");
 
             System.out.print("Enter your choice: ");
             String choice = input.nextLine();
@@ -153,6 +148,9 @@ public class Programming1A_POE_Part1 {
                             messageNumber, recipient, messageText
                     );
 
+                    // PART 3 - Captures the sender's cellphone number
+                    message.setSender(cellPhoneNumber);
+
                     // Display validation results
                     System.out.println(message.checkRecipientCell());
                     System.out.println(message.checkMessageLength());
@@ -177,10 +175,9 @@ public class Programming1A_POE_Part1 {
                             );
 
                             sentMessages.add(message);
-                            
+
                             // Adds the sent message to the arrays
                             messageManager.addMessage(message, 1);
-
 
                             // Display the full message details
                             System.out.println(
@@ -200,7 +197,7 @@ public class Programming1A_POE_Part1 {
                         System.out.println(
                                 message.SentMessage(2)
                         );
-                        
+
                         // Adds the disregarded message to the arrays
                         messageManager.addMessage(message, 2);
 
@@ -210,12 +207,11 @@ public class Programming1A_POE_Part1 {
 
                             String storageResult = message.storeMessage();
                             System.out.println(storageResult);
-                            
+
                             // Adds the message only if storage was successful
                             if (storageResult.equals("Message successfully stored.")) {
                                 messageManager.addMessage(message, 3);
                             }
-                                                                                   
 
                         } else {
 
@@ -248,15 +244,55 @@ public class Programming1A_POE_Part1 {
                         "Total messages sent: "
                         + Message.returnTotalMessages()
                 );
-                
+
                 messageManager.displayArrayCounts();
 
                 System.out.println("Goodbye!");
 
+            } else if (choice.equals("4")) {
+
+                menuOption = 4;
+
+                // PART 3 - Stored Messages menu
+                System.out.println();
+                System.out.println("STORED MESSAGES");
+                System.out.println("1) Display sender and recipient");
+                System.out.println("2) Display longest stored message");
+                System.out.println("3) Search by message ID");
+                System.out.println("4) Search by recipient");
+                System.out.println("5) Delete message using message hash");
+                System.out.println("6) Display message report");
+                System.out.println("7) Return to main menu");
+
+// PART 3 - Handles the stored messages menu selection
+                System.out.print("Enter your choice: ");
+                String storedChoice = input.nextLine();
+
+                if (storedChoice.equals("1")) {
+
+                    messageManager.displaySenderAndRecipient();
+
+                } else if (storedChoice.equals("7")) {
+
+                    System.out.println("Returning to main menu.");
+
+                } else if (storedChoice.equals("2")
+                        || storedChoice.equals("3")
+                        || storedChoice.equals("4")
+                        || storedChoice.equals("5")
+                        || storedChoice.equals("6")) {
+
+                    System.out.println("Coming Soon.");
+
+                } else {
+
+                    System.out.println("Invalid option. Please try again.");
+                }
+
             } else {
 
                 System.out.println(
-                        "Invalid option. Please choose 1, 2 or 3."
+                        "Invalid option. Please choose 1, 2, 3 or 4."
                 );
             }
         }
