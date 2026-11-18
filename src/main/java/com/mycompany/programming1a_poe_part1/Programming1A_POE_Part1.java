@@ -264,7 +264,7 @@ public class Programming1A_POE_Part1 {
                 System.out.println("6) Display message report");
                 System.out.println("7) Return to main menu");
 
-// PART 3 - Handles the stored messages menu selection
+                // PART 3 - Handles the stored messages menu selection
                 System.out.print("Enter your choice: ");
                 String storedChoice = input.nextLine();
 
@@ -272,12 +272,23 @@ public class Programming1A_POE_Part1 {
 
                     messageManager.displaySenderAndRecipient();
 
+                } else if (storedChoice.equals("2")) {
+
+                    // PART 3 - Displays the longest stored message
+                    String longestMessage = messageManager.findLongestMessage();
+
+                    if (longestMessage.isEmpty()) {
+                        System.out.println("No stored messages available.");
+                    } else {
+                        System.out.println("Longest stored message:");
+                        System.out.println(longestMessage);
+                    }
+
                 } else if (storedChoice.equals("7")) {
 
                     System.out.println("Returning to main menu.");
 
-                } else if (storedChoice.equals("2")
-                        || storedChoice.equals("3")
+                } else if (storedChoice.equals("3")
                         || storedChoice.equals("4")
                         || storedChoice.equals("5")
                         || storedChoice.equals("6")) {

@@ -97,11 +97,10 @@ public class MessageManager {
         System.out.println("Message hashes: " + messageHashes.length);
         System.out.println("Message IDs: " + messageIDs.length);
     }
-    
+
     // PART 3 - Reads stored messages from the JSON file
     // Adapted from Google Gson User Guide:
     // https://google.github.io/gson/UserGuide.html
-
     public void loadStoredMessages() {
 
         Path filePath = Path.of("messages.json");
@@ -154,6 +153,22 @@ public class MessageManager {
                 System.out.println("------------------------------");
             }
         }
+    }
+
+    // PART 3 - Finds the longest stored message
+    public String findLongestMessage() {
+
+        String longestMessage = "";
+
+        for (int i = 0; i < storedMessages.length; i++) {
+
+            if (storedMessages[i].length() > longestMessage.length()) {
+
+                longestMessage = storedMessages[i];
+            }
+        }
+
+        return longestMessage;
     }
 
 }
