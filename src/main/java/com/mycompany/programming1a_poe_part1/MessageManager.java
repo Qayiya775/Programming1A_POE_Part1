@@ -30,6 +30,19 @@ public class MessageManager {
     private String[] senders = new String[0];
     private String[] messageStatuses = new String[0];
 
+    // PART 3 - JSON file used for message storage
+    private String jsonFile = "messages.json";
+
+    // Default constructor for the QuickChat application
+    public MessageManager() {
+    }
+
+    // Constructor for testing with a separate JSON file
+    public MessageManager(String jsonFile) {
+
+        this.jsonFile = jsonFile;
+    }
+
     // Adds a new value to an existing array
     private String[] addToArray(String[] array, String value) {
 
@@ -104,13 +117,13 @@ public class MessageManager {
     // https://google.github.io/gson/UserGuide.html
     public void loadStoredMessages() {
 
-        Path filePath = Path.of("messages.json");
+        Path filePath = Path.of(jsonFile);
 
         if (!Files.exists(filePath)) {
             return;
         }
 
-        try (FileReader reader = new FileReader("messages.json")) {
+        try (FileReader reader = new FileReader(jsonFile)) {
 
             Gson gson = new Gson();
 
@@ -294,7 +307,7 @@ public class MessageManager {
     // https://google.github.io/gson/UserGuide.html
     private boolean deleteStoredMessage(String messageID) {
 
-        Path filePath = Path.of("messages.json");
+        Path filePath = Path.of(jsonFile);
 
         if (!Files.exists(filePath)) {
             return false;
@@ -303,7 +316,7 @@ public class MessageManager {
         Gson gson = new Gson();
         Message[] loadedMessages;
 
-        try (FileReader reader = new FileReader("messages.json")) {
+        try (FileReader reader = new FileReader(jsonFile)) {
 
             loadedMessages = gson.fromJson(
                     reader, Message[].class);
@@ -334,7 +347,7 @@ public class MessageManager {
                     }
                 }
 
-                try (FileWriter writer = new FileWriter("messages.json")) {
+                try (FileWriter writer = new FileWriter(jsonFile)) {
 
                     gson.toJson(updatedMessages, writer);
                     return true;
@@ -386,6 +399,12 @@ public class MessageManager {
         }
 
         return report;
+    }
+
+    // PART 3 - Returns the sent messages array for unit testing
+    public String[] getSentMessages() {
+
+        return sentMessages;
     }
 
 }
