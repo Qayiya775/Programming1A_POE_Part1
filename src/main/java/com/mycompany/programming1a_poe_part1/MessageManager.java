@@ -102,16 +102,6 @@ public class MessageManager {
         }
     }
 
-    // Temporarily checks that the arrays are populated
-    public void displayArrayCounts() {
-
-        System.out.println("Sent messages: " + sentMessages.length);
-        System.out.println("Disregarded messages: " + disregardedMessages.length);
-        System.out.println("Stored messages: " + storedMessages.length);
-        System.out.println("Message hashes: " + messageHashes.length);
-        System.out.println("Message IDs: " + messageIDs.length);
-    }
-
     // PART 3 - Reads stored messages from the JSON file
     // Adapted from Google Gson User Guide:
     // https://google.github.io/gson/UserGuide.html
@@ -169,16 +159,19 @@ public class MessageManager {
         }
     }
 
-    // PART 3 - Finds the longest stored message
+    // PART 3 - Finds the longest stored message using parallel arrays
     public String findLongestMessage() {
 
         String longestMessage = "";
 
-        for (int i = 0; i < storedMessages.length; i++) {
+        for (int i = 0; i < allMessages.length; i++) {
 
-            if (storedMessages[i].length() > longestMessage.length()) {
+            if (messageStatuses[i].equals("Stored")) {
 
-                longestMessage = storedMessages[i];
+                if (allMessages[i].length() > longestMessage.length()) {
+
+                    longestMessage = allMessages[i];
+                }
             }
         }
 
@@ -383,7 +376,8 @@ public class MessageManager {
                     report = report
                             + "Message ID: " + messageIDs[i] + "\n"
                             + "Message Hash: " + messageHashes[i] + "\n"
-                            + "Sender: " + senders[i] + "\n"
+                            + "Sender: " + (senders[i] == null || senders[i].isEmpty()
+                            ? "Not recorded" : senders[i]) + "\n"
                             + "Recipient: " + recipients[i] + "\n"
                             + "Message: " + allMessages[i] + "\n"
                             + "Status: " + messageStatuses[i] + "\n"
@@ -399,6 +393,21 @@ public class MessageManager {
         }
 
         return report;
+    }
+
+    // PART 3 - Displays recently sent messages
+    public void displayRecentlySentMessages() {
+
+        if (sentMessages.length == 0) {
+            System.out.println("No sent messages available.");
+            return;
+        }
+
+        System.out.println("\nRECENTLY SENT MESSAGES");
+
+        for (int i = 0; i < sentMessages.length; i++) {
+            System.out.println((i + 1) + ". " + sentMessages[i]);
+        }
     }
 
     // PART 3 - Returns the sent messages array for unit testing

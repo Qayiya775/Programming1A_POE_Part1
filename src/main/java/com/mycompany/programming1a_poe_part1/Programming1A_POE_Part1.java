@@ -8,7 +8,6 @@ package com.mycompany.programming1a_poe_part1;
  * @author User 1
  */
 import java.util.Scanner;
-import java.util.ArrayList;
 
 public class Programming1A_POE_Part1 {
 
@@ -18,9 +17,6 @@ public class Programming1A_POE_Part1 {
 
         // PART 3 - Manages message arrays
         MessageManager messageManager = new MessageManager();
-
-        // Stores successfully sent messages
-        ArrayList<Message> sentMessages = new ArrayList<>();
 
         // Tracks message numbers across the program
         int messageNumber = 0;
@@ -174,8 +170,6 @@ public class Programming1A_POE_Part1 {
                                     message.SentMessage(1)
                             );
 
-                            sentMessages.add(message);
-
                             // Adds the sent message to the arrays
                             messageManager.addMessage(message, 1);
 
@@ -233,8 +227,8 @@ public class Programming1A_POE_Part1 {
 
                 menuOption = 2;
 
-                // Part 2 requires this feature to be unavailable
-                System.out.println("Coming Soon.");
+                // PART 3 - Displays recently sent messages
+                messageManager.displayRecentlySentMessages();
 
             } else if (choice.equals("3")) {
 
@@ -244,8 +238,6 @@ public class Programming1A_POE_Part1 {
                         "Total messages sent: "
                         + Message.returnTotalMessages()
                 );
-
-                messageManager.displayArrayCounts();
 
                 System.out.println("Goodbye!");
 
