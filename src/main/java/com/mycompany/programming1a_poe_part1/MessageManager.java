@@ -171,4 +171,40 @@ public class MessageManager {
         return longestMessage;
     }
 
+    // PART 3 - Searches for a message using its ID
+    public String searchByMessageID(String searchID) {
+
+        for (int i = 0; i < messageIDs.length; i++) {
+
+            if (messageIDs[i].equals(searchID)) {
+
+                return "Recipient: " + recipients[i]
+                        + "\nMessage: " + allMessages[i];
+            }
+        }
+
+        return "Message not found.";
+    }
+    
+        // PART 3 - Searches for all messages sent or stored for a recipient
+    public String searchByRecipient(String searchRecipient) {
+
+        String results = "";
+
+        for (int i = 0; i < recipients.length; i++) {
+
+            if (recipients[i].equals(searchRecipient)
+                    && !messageStatuses[i].equals("Disregard")) {
+
+                results = results + allMessages[i] + "\n";
+            }
+        }
+
+        if (results.isEmpty()) {
+            return "No messages found for this recipient.";
+        }
+
+        return results.trim();
+    }
+
 }

@@ -284,13 +284,31 @@ public class Programming1A_POE_Part1 {
                         System.out.println(longestMessage);
                     }
 
+                } else if (storedChoice.equals("3")) {
+
+                    // PART 3 - Searches by message ID
+                    System.out.print("Enter message ID: ");
+                    String searchID = input.nextLine();
+
+                    System.out.println(
+                            messageManager.searchByMessageID(searchID)
+                    );
+
+                } else if (storedChoice.equals("4")) {
+
+                    // PART 3 - Searches by recipient
+                    System.out.print("Enter recipient cell phone number: ");
+                    String searchRecipient = input.nextLine();
+
+                    System.out.println(
+                            messageManager.searchByRecipient(searchRecipient)
+                    );
+
                 } else if (storedChoice.equals("7")) {
 
                     System.out.println("Returning to main menu.");
 
-                } else if (storedChoice.equals("3")
-                        || storedChoice.equals("4")
-                        || storedChoice.equals("5")
+                } else if (storedChoice.equals("5")
                         || storedChoice.equals("6")) {
 
                     System.out.println("Coming Soon.");
