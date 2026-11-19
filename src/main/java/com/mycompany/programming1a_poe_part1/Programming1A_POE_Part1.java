@@ -308,10 +308,22 @@ public class Programming1A_POE_Part1 {
 
                     System.out.println("Returning to main menu.");
 
-                } else if (storedChoice.equals("5")
-                        || storedChoice.equals("6")) {
+                } else if (storedChoice.equals("5")) {
 
-                    System.out.println("Coming Soon.");
+                    // PART 3 - Deletes a message using its hash
+                    System.out.print("Enter message hash: ");
+                    String searchHash = input.nextLine();
+
+                    System.out.println(
+                            messageManager.deleteMessageByHash(searchHash)
+                    );
+
+                } else if (storedChoice.equals("6")) {
+
+                    // PART 3 - Displays the message report
+                    System.out.println(
+                            messageManager.generateMessageReport()
+                    );
 
                 } else {
 

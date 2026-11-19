@@ -6,6 +6,7 @@ package com.mycompany.programming1a_poe_part1;
 
 import com.google.gson.Gson;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -185,8 +186,8 @@ public class MessageManager {
 
         return "Message not found.";
     }
-    
-        // PART 3 - Searches for all messages sent or stored for a recipient
+
+    // PART 3 - Searches for all messages sent or stored for a recipient
     public String searchByRecipient(String searchRecipient) {
 
         String results = "";
@@ -205,6 +206,186 @@ public class MessageManager {
         }
 
         return results.trim();
+    }
+
+    // PART 3 - Removes an element from an array
+    private String[] removeFromArray(String[] array, int index) {
+
+        String[] newArray = new String[array.length - 1];
+
+        int newIndex = 0;
+
+        for (int i = 0; i < array.length; i++) {
+
+            if (i != index) {
+
+                newArray[newIndex] = array[i];
+                newIndex++;
+            }
+        }
+
+        return newArray;
+    }
+
+    // PART 3 - Deletes a message using its message hash
+    public String deleteMessageByHash(String searchHash) {
+
+        for (int i = 0; i < messageHashes.length; i++) {
+
+            if (messageHashes[i].equalsIgnoreCase(searchHash)) {
+
+                String deletedMessage = allMessages[i];
+                String status = messageStatuses[i];
+
+                // Permanently deletes stored messages from JSON
+                if (status.equals("Stored")) {
+
+                    if (!deleteStoredMessage(messageIDs[i])) {
+
+                        return "Unable to delete stored message.";
+                    }
+                }
+
+                // Finds the matching index in the status-specific array
+                int statusIndex = 0;
+
+                for (int j = 0; j < i; j++) {
+
+                    if (messageStatuses[j].equals(status)) {
+                        statusIndex++;
+                    }
+                }
+
+                // Removes the message from the appropriate array
+                if (status.equals("Sent")) {
+
+                    sentMessages = removeFromArray(
+                            sentMessages, statusIndex);
+
+                } else if (status.equals("Stored")) {
+
+                    storedMessages = removeFromArray(
+                            storedMessages, statusIndex);
+
+                } else if (status.equals("Disregard")) {
+
+                    disregardedMessages = removeFromArray(
+                            disregardedMessages, statusIndex);
+                }
+
+                // Removes related details from the parallel arrays
+                allMessages = removeFromArray(allMessages, i);
+                messageHashes = removeFromArray(messageHashes, i);
+                messageIDs = removeFromArray(messageIDs, i);
+                recipients = removeFromArray(recipients, i);
+                senders = removeFromArray(senders, i);
+                messageStatuses = removeFromArray(messageStatuses, i);
+
+                return "Message: \"" + deletedMessage
+                        + "\" successfully deleted.";
+            }
+        }
+
+        return "Message not found.";
+    }
+
+    // PART 3 - Permanently removes a stored message from JSON
+    // Adapted from Google Gson User Guide:
+    // https://google.github.io/gson/UserGuide.html
+    private boolean deleteStoredMessage(String messageID) {
+
+        Path filePath = Path.of("messages.json");
+
+        if (!Files.exists(filePath)) {
+            return false;
+        }
+
+        Gson gson = new Gson();
+        Message[] loadedMessages;
+
+        try (FileReader reader = new FileReader("messages.json")) {
+
+            loadedMessages = gson.fromJson(
+                    reader, Message[].class);
+
+        } catch (IOException | com.google.gson.JsonParseException e) {
+            return false;
+        }
+
+        if (loadedMessages == null) {
+            return false;
+        }
+
+        for (int i = 0; i < loadedMessages.length; i++) {
+
+            if (loadedMessages[i].getMessageID().equals(messageID)) {
+
+                Message[] updatedMessages
+                        = new Message[loadedMessages.length - 1];
+
+                int newIndex = 0;
+
+                for (int j = 0; j < loadedMessages.length; j++) {
+
+                    if (j != i) {
+
+                        updatedMessages[newIndex] = loadedMessages[j];
+                        newIndex++;
+                    }
+                }
+
+                try (FileWriter writer = new FileWriter("messages.json")) {
+
+                    gson.toJson(updatedMessages, writer);
+                    return true;
+
+                } catch (IOException e) {
+                    return false;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    // PART 3 - Generates a report of sent and stored messages
+    public String generateMessageReport() {
+
+        String report = "\nQUICKCHAT MESSAGE REPORT\n";
+
+        String[] reportStatuses = {"Sent", "Stored"};
+
+        for (int j = 0; j < reportStatuses.length; j++) {
+
+            report = report + "\n"
+                    + reportStatuses[j].toUpperCase()
+                    + " MESSAGES\n";
+
+            boolean found = false;
+
+            for (int i = 0; i < allMessages.length; i++) {
+
+                if (messageStatuses[i].equals(reportStatuses[j])) {
+
+                    report = report
+                            + "Message ID: " + messageIDs[i] + "\n"
+                            + "Message Hash: " + messageHashes[i] + "\n"
+                            + "Sender: " + senders[i] + "\n"
+                            + "Recipient: " + recipients[i] + "\n"
+                            + "Message: " + allMessages[i] + "\n"
+                            + "Status: " + messageStatuses[i] + "\n"
+                            + "------------------------------\n";
+
+                    found = true;
+                }
+            }
+
+            if (!found) {
+                report = report + "No messages available.\n";
+            }
+        }
+
+        return report;
     }
 
 }
